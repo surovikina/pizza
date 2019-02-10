@@ -114,6 +114,8 @@ button {
     margin: 15px;
     width: calc(100% / 3 - 30px);
     border: 1px solid black;
+    /*backface-visibility: hidden;*/
+    transition: transform .8s ease-in-out;
 }
 
 .card:hover {
@@ -121,8 +123,12 @@ button {
 }
 
 .card__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px 10px;
     font-size: 14px;
+    transition:  .8s ease-in-out;
 }
 
 .card__bottom > div {
@@ -153,11 +159,6 @@ button {
     display: none;
 }
 
-.cards--list .card__bottom {
-    display: flex;
-    align-items: center;
-}
-
 .cards--list .card__bottom > div {
     margin-right: 20px;
 }
@@ -183,4 +184,41 @@ button {
 .sortList > input {
     margin-right: 40px;
 
+}
+
+/*   Style for rotate card   */
+
+.card.rotate--active {
+    transform: rotateY(180deg);
+}
+
+.front,
+.back {
+    height: 348px;
+}
+
+.card {
+    height: 348px;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.front,
+.back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.front {
+    z-index: 2;
+}
+
+.back {
+    transform: rotateY(180deg);
+    background: #f8f8f8;
 }
