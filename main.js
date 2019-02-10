@@ -54,11 +54,15 @@
 
             let test = document.createElement('div');
             test.className = 'card';
-            test.innerHTML = `<div class="card__top"><img src="img/pizza.jpg" alt=""></div>`;
+            // test.innerHTML = `<div class="card__top"><img src="img/pizza.jpg" alt=""></div>`;
+
+            let front = document.createElement('div');
+            front.classList = 'front';
+            test.appendChild(front);
 
             let cardBottom = document.createElement('div');
             cardBottom.className = 'card__bottom';
-            test.appendChild(cardBottom);
+            front.appendChild(cardBottom);
 
             let name = document.createElement('div');
             name.classList = 'name';
@@ -78,6 +82,11 @@
                 let listItem = document.createElement('li');
                 listItem.classList = 'ingredient-item';
                 listItem.innerHTML = ` ${el.consist[i]} `;
+
+                let deleteItem = document.createElement('div');
+                deleteItem.classList = 'delete-item';
+                listItem.appendChild(deleteItem);
+
                 list.appendChild(listItem);
             }
 
@@ -91,8 +100,12 @@
             price.innerHTML = `Цена: ${el.price} гривен`;
             cardBottom.appendChild(price);
 
-            cards.appendChild(test);
+            let back = document.createElement('div');
+            back.classList = 'back';
+            back.innerHTML = `<div class="card__top"><img src="img/pizza.jpg" alt=""></div>`;
+            test.appendChild(back);
 
+            cards.appendChild(test);
         })
     }
 
@@ -133,7 +146,7 @@
 
         let sortPizzaByIngredient = pizzaList.filter(function (item) {
 
-            for ( let i = 0; i < item.consist.length; i++) {
+            for (let i = 0; i < item.consist.length; i++) {
                 if (item.consist[i] === param.toLowerCase()) {
                     return true;
                 }
@@ -141,7 +154,7 @@
         });
 
 
-        if ( param === '') {
+        if (param === '') {
             createCard(pizzaList);
         } else {
             deleteCards();
@@ -155,11 +168,43 @@
 
     inputSortByPrice.addEventListener('click', showSortCardByPrice);
     inputSortByName.addEventListener('click', showSortCardByName);
-    inputSortByIngredient.addEventListener('input', showSortCardByIngredient)
+    inputSortByIngredient.addEventListener('input', showSortCardByIngredient);
 
 })();
 
 
+(function () {
 
+    let cardList = document.querySelectorAll('.card');
 
+    function rotateCard() {
+        if (this.classList.contains('rotate--active')) {
+            this.classList.remove('rotate--active');
+        } else {
+            this.classList.add('rotate--active');
+        }
+    }
 
+    for (let i = 0; i < cardList.length; i++) {
+        cardList[i].addEventListener('click', rotateCard);
+    }
+
+})();
+
+(function () {
+    let ingredientList = document.querySelectorAll('.ingredient-item');
+
+    function deleteIngredient(event) {
+        let terget = event.target;
+
+        if (terget.classList.contains('ingredient-item') || terget.classList.contains('delete-item')) {
+            event.currentTarget.remove();
+        }
+        event.stopPropagation();
+    }
+
+    for (let i = 0; i < ingredientList.length; i++) {
+        ingredientList[i].addEventListener('click', deleteIngredient);
+    }
+
+})();
