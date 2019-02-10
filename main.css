@@ -136,15 +136,43 @@ button {
 }
 .consist {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
 }
 
 .ingredient-list {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.ingredient-item {
+    position: relative;
+    padding: 5px;
+}
+
+.delete-item {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 2px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid var(--brand-color);
+    background: url("img/cross.svg");
+    background-size: contain;
+    opacity: 0;
+}
+
+.ingredient-item:hover .delete-item  {
+    opacity: 1;
 }
 
 .ingredient-item:not(:last-child) {
-    margin-right: 5px;
+    margin-right: 4px;
 }
 
 .cards--list {
@@ -179,6 +207,8 @@ button {
 
 .hidden {
     opacity: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
 .sortList > input {

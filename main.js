@@ -82,6 +82,11 @@
                 let listItem = document.createElement('li');
                 listItem.classList = 'ingredient-item';
                 listItem.innerHTML = ` ${el.consist[i]} `;
+
+                let deleteItem = document.createElement('div');
+                deleteItem.classList = 'delete-item';
+                listItem.appendChild(deleteItem);
+
                 list.appendChild(listItem);
             }
 
@@ -172,10 +177,6 @@
 
     let cardList = document.querySelectorAll('.card');
 
-    for (let i = 0; i < cardList.length; i++) {
-        cardList[i].addEventListener('click', rotateCard);
-    }
-
     function rotateCard() {
         if (this.classList.contains('rotate--active')) {
             this.classList.remove('rotate--active');
@@ -183,6 +184,27 @@
             this.classList.add('rotate--active');
         }
     }
+
+    for (let i = 0; i < cardList.length; i++) {
+        cardList[i].addEventListener('click', rotateCard);
+    }
+
 })();
 
+(function () {
+    let ingredientList = document.querySelectorAll('.ingredient-item');
 
+    function deleteIngredient(event) {
+        let terget = event.target;
+
+        if (terget.classList.contains('ingredient-item') || terget.classList.contains('delete-item')) {
+            event.currentTarget.remove();
+        }
+        event.stopPropagation();
+    }
+
+    for (let i = 0; i < ingredientList.length; i++) {
+        ingredientList[i].addEventListener('click', deleteIngredient);
+    }
+
+})();
