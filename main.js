@@ -25,16 +25,18 @@
 (function () {
 
     let pizzaList = [
-        {name: 'Первая', consist: ['курица', 'перец', 'помидоры'], calories: 23, price: '46'},
-        {name: 'Вторая', consist: ['салями', 'перец', 'сыр'], calories: 22, price: '30'},
-        {name: 'Третья', consist: ['мука', 'томаты', 'сыр'], calories: 20, price: '50'},
-        {name: 'Ещё одна', consist: ['мука', 'томаты', 'сыр'], calories: 20, price: '100'}];
+        {name: 'Первая', consist: ['курица', 'перец', 'помидоры'], calories: 23, price: '46', id: '1'},
+        {name: 'Вторая', consist: ['салями', 'перец', 'сыр'], calories: 22, price: '30', id: '2'},
+        {name: 'Третья', consist: ['мука', 'томаты', 'сыр'], calories: 20, price: '50', id: '3'},
+        {name: 'Ещё одна', consist: ['мука', 'томаты', 'сыр'], calories: 20, price: '100', id: '4'}];
     let cards = document.querySelector('.cards');
     let sortPizzaList = pizzaList.slice().sort(comparePrice);
     let sortPizzaByName = pizzaList.slice().sort(compareName);
     let inputSortByPrice = document.getElementById('price');
     let inputSortByName = document.getElementById('name');
     let inputSortByIngredient = document.getElementById('consist');
+    let buttons = cards.getElementsByTagName('button');
+
 
     function comparePrice(a, b) {
         let priceA = +a.price;
@@ -97,13 +99,18 @@
 
             let price = document.createElement('div');
             price.classList = 'price';
-            price.innerHTML = `Цена: ${el.price} гривен`;
+            price.innerHTML = `Цена: ${el.consist.length} $`;
             cardBottom.appendChild(price);
 
             let back = document.createElement('div');
             back.classList = 'back';
             back.innerHTML = `<div class="card__top"><img src="img/pizza.jpg" alt=""></div>`;
             test.appendChild(back);
+
+            let button = document.createElement('button');
+            button.setAttribute('data-id', el.id);
+            button.innerHTML = 'Заказать'
+            cardBottom.appendChild(button);
 
             cards.appendChild(test);
         })
@@ -125,7 +132,6 @@
 
             createCard(pizzaList);
         }
-
     }
 
     function showSortCardByName() {
@@ -138,12 +144,10 @@
 
             createCard(pizzaList);
         }
-
     }
 
     function showSortCardByIngredient() {
         let param = inputSortByIngredient.value;
-
         let sortPizzaByIngredient = pizzaList.filter(function (item) {
 
             for (let i = 0; i < item.consist.length; i++) {
@@ -153,7 +157,6 @@
             }
         });
 
-
         if (param === '') {
             createCard(pizzaList);
         } else {
@@ -161,10 +164,47 @@
 
             createCard(sortPizzaByIngredient);
         }
-
     }
 
     createCard(pizzaList);
+
+    let cart = {}; // my basket
+    let quantiti = document.querySelector('.item-cound');
+
+
+    function addToBasket(event) {
+      event.stopPropagation();
+      let pizzaId = event.currentTarget.getAttribute('data-id');
+      if(cart[pizzaId] != undefined) {
+        cart[pizzaId]++
+      } else {
+          cart[pizzaId]=1;
+      };
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        checkBasket();    // need execute this function after loading page
+        showQuantity();  // need execute this function after loading page
+    }
+
+    function checkBasket () {
+      if(localStorage.getItem('cart') != null ) {
+        cart = JSON.parse(localStorage.getItem('cart'))
+      }
+    }
+
+    function showQuantity() {
+      let out = 0;
+      for( let id in cart) {
+        out += cart[id];
+      }
+    quantiti.innerHTML = out;
+    }
+
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', addToBasket);
+    }
 
     inputSortByPrice.addEventListener('click', showSortCardByPrice);
     inputSortByName.addEventListener('click', showSortCardByName);

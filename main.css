@@ -47,6 +47,10 @@ button {
     font-size: 1rem;
 }
 
+.card button {
+  border: 1px solid var(--brand-color);
+}
+
 input:focus {
     outline: none;
 }
@@ -84,23 +88,40 @@ button {
 
 .holder {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px
 }
 
 .view {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 10px;
-    margin: auto;
     width: 30px;
     height: 20px;
     padding: 20px;
     background: url("img/button.svg") no-repeat center;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 20px;
+.basket {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: url('img/shopping-cart.svg') no-repeat center;
+  background-size: contain;
+}
+
+.item-cound {
+  position: absolute;
+  display: block;
+  bottom: -20px;
+  left: -5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 16px;
+  border-radius: 50%;
+  border: 1px dashed var(--brand-color);
 }
 
 .cards {
@@ -114,7 +135,6 @@ button {
     margin: 15px;
     width: calc(100% / 3 - 30px);
     border: 1px solid black;
-    /*backface-visibility: hidden;*/
     transition: transform .8s ease-in-out;
 }
 
@@ -251,4 +271,8 @@ button {
 .back {
     transform: rotateY(180deg);
     background: #f8f8f8;
+}
+
+.sortGreed input {
+  margin: 20px 0;
 }
