@@ -173,13 +173,14 @@
 
 
     function addToBasket(event) {
-      event.stopPropagation();
-      let pizzaId = event.currentTarget.getAttribute('data-id');
-      if(cart[pizzaId] != undefined) {
-        cart[pizzaId]++
-      } else {
-          cart[pizzaId]=1;
-      };
+        event.stopPropagation();
+        let pizzaId = event.currentTarget.getAttribute('data-id');
+        if (cart[pizzaId] != undefined) {
+            cart[pizzaId]++
+        } else {
+            cart[pizzaId] = 1;
+        }
+        ;
 
         localStorage.setItem('cart', JSON.stringify(cart));
 
@@ -187,25 +188,46 @@
         showQuantity();  // need execute this function after loading page
     }
 
-    function checkBasket () {
-      if(localStorage.getItem('cart') != null ) {
-        cart = JSON.parse(localStorage.getItem('cart'))
-      }
+    function checkBasket() {
+        if (localStorage.getItem('cart') != null) {
+            cart = JSON.parse(localStorage.getItem('cart'))
+        }
     }
 
     function showQuantity() {
-      let out = 0;
-      for( let id in cart) {
-        out += cart[id];
-      }
-    quantiti.innerHTML = out;
+        let out = 0;
+        for (let id in cart) {
+            out += cart[id];
+        }
+        quantiti.innerHTML = out;
     }
 
 
     for (var i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener('click', addToBasket);
+        buttons[i].addEventListener('click', addToBasket);
     }
 
+
+    function cardsListener(event) {
+        let target = event.target;
+        let card = target.closest('.card')
+
+        if (target.classList.contains('delete-item')) {
+
+            target.parentElement.remove();
+            target.remove();
+        } else if ( card) {
+
+            if (card.classList.contains('rotate--active')) {
+                card.classList.remove('rotate--active');
+            } else {
+                card.classList.add('rotate--active');
+            }
+        }
+    }
+
+
+    cards.addEventListener('click', cardsListener);
     inputSortByPrice.addEventListener('click', showSortCardByPrice);
     inputSortByName.addEventListener('click', showSortCardByName);
     inputSortByIngredient.addEventListener('input', showSortCardByIngredient);
@@ -213,38 +235,4 @@
 })();
 
 
-(function () {
 
-    let cardList = document.querySelectorAll('.card');
-
-    function rotateCard() {
-        if (this.classList.contains('rotate--active')) {
-            this.classList.remove('rotate--active');
-        } else {
-            this.classList.add('rotate--active');
-        }
-    }
-
-    for (let i = 0; i < cardList.length; i++) {
-        cardList[i].addEventListener('click', rotateCard);
-    }
-
-})();
-
-(function () {
-    let ingredientList = document.querySelectorAll('.ingredient-item');
-
-    function deleteIngredient(event) {
-        let terget = event.target;
-
-        if (terget.classList.contains('ingredient-item') || terget.classList.contains('delete-item')) {
-            event.currentTarget.remove();
-        }
-        event.stopPropagation();
-    }
-
-    for (let i = 0; i < ingredientList.length; i++) {
-        ingredientList[i].addEventListener('click', deleteIngredient);
-    }
-
-})();
